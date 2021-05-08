@@ -17,34 +17,36 @@ driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selen
 wait = WebDriverWait(driver, 600)
 i = 0
 name = "Crypto Price tracker"
-search_xpath = '//*[@id="main"]/footer/div[1]/div[2]/div/div[2]'
 while 1:
-    i += 1
-    driver.get("https://coinswitch.co/coins/dogecoin/dogecoin-to-inr")
-    time.sleep(3)
-    print('{}: coinswitch website accessed'.format(i))
-    g = driver.find_elements_by_class_name('assets__price')
-    a = 'Doge: ' + g[20].text
-    print(a)
-    driver.get("https://web.whatsapp.com/")
-    time.sleep(5)
-    # search_box = WebDriverWait(driver, 500).until(EC.presence_of_element_located(
-    #     (By.CLASS_NAME, '_2_1wd.copyable-text.selectable-text')))
-    # search_box = driver.find_element_by_xpath(search_xpath)
-    search_box = driver.find_element_by_class_name('_2_1wd.copyable-text.selectable-text')
-    pyperclip.copy(name)
-    search_box.send_keys(Keys.CONTROL + "v")
-    group = driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
-    # time.sleep(10)
-    group.click()
-    print('Whatsapp group found')
-    msg_box = driver.find_element_by_xpath('//div[@contenteditable="true"][@data-tab="6"]')
-    time.sleep(3)
-    msg_box.clear()
-    msg_box.send_keys(a)
-    msg_box.send_keys(Keys.ENTER)
-    # button = driver.find_element_by_class_name('_1E0Oz')
-    # button.click()
-    print('Price sent')
-    time.sleep(60)
+    try:
+        i += 1
+        driver.get("https://coinswitch.co/coins/dogecoin/dogecoin-to-inr")
+        time.sleep(3)
+        print('{}: coinswitch website accessed'.format(i))
+        g = driver.find_elements_by_class_name('assets__price')
+        a = 'Doge: ' + g[20].text
+        print(a)
+        driver.get("https://web.whatsapp.com/")
+        time.sleep(5)
+        search_box = WebDriverWait(driver, 500).until(EC.presence_of_element_located(
+            (By.CLASS_NAME, '_2_1wd.copyable-text.selectable-text')))
+        pyperclip.copy(name)
+        search_box.send_keys(Keys.CONTROL + "v")
+        group = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
+            (By.XPATH, '//span[@title = "{}"]'.format(name))))
+        # driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
+        # time.sleep(10)
+        group.click()
+        print('Whatsapp group found')
+        msg_box = WebDriverWait(driver, 500).until(EC.presence_of_element_located(
+            (By.XPATH, '//div[@contenteditable="true"][@data-tab="6"]')))
+        # msg_box = driver.find_element_by_xpath('//div[@contenteditable="true"][@data-tab="6"]')
+        # time.sleep(3)
+        msg_box.clear()
+        msg_box.send_keys(a)
+        msg_box.send_keys(Keys.ENTER)
+        print('Price sent')
+        time.sleep(60)
+    except:
+        continue
 driver.close()
