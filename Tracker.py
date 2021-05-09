@@ -100,7 +100,7 @@ while 1:
         recipients = ['Crypto Price tracker']
         url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
         access_website(url, i)
-        # coins = ['Dogecoin', 'IOST', 'Zilliqa', 'Nano', 'NEM', 'VeChain']
+        # coins = ['Dogecoin', 'IOST', 'Zilliqa', 'Nano', 'NEM', 'VeChain'] # fixed tracking
         prices = fetch_price(coins)
         access_wtsp()
         send_price(recipients, prices)
