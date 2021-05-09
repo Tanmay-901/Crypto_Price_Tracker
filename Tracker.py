@@ -7,6 +7,7 @@ import pyperclip
 import time
 
 
+coins = list(input('Enter coins to be tracked: ').split())
 driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
 options = webdriver.ChromeOptions()
 # options.add_argument('headless')
@@ -58,7 +59,7 @@ def send_price(names, prices):
         group = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
             (By.XPATH, '//span[@title = "{}"]'.format(name))))
         group.click()
-        print('Whatsapp group found')
+        # print('Whatsapp group found')
         # for price in prices:
         msg_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
             (By.XPATH, '//div[@contenteditable="true"][@data-tab="6"]')))
@@ -94,7 +95,6 @@ def cooldown_period(timer):
 
 i = 0
 t = 120
-coins = list(input('Enter coins to be tracked: ').split())
 while 1:
     try:
         recipients = ['Crypto Price tracker']
