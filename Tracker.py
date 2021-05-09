@@ -66,6 +66,11 @@ def send_price(names, prices):
         pyperclip.copy(prices)
         msg_box.send_keys(Keys.CONTROL + "v")
         msg_box.send_keys(Keys.ENTER)
+        try:
+            print('alert accepted')
+            driver.switch_to.alert.accept()
+        except:
+            pass
         time.sleep(5)
 
 
@@ -88,6 +93,7 @@ while 1:
         prices = fetch_price(coins)
         access_wtsp()
         send_price(recipients, prices)
+
         # print(prices)
         cooldown_period(t)
     except:
