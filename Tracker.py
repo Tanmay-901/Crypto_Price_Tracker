@@ -67,25 +67,25 @@ def send_price(names, prices):
         msg_box.send_keys(Keys.CONTROL + "v")
         msg_box.send_keys(Keys.ENTER)
         # time.sleep(5)
-        try:
-            print('alert accepted')
-            driver.switch_to.alert.accept()
-        except:
-            pass
+        # try:
+        #     print('alert accepted')
+        #     driver.switch_to.alert.accept()
+        # except:
+        #     pass
 
 
 def cooldown_period(timer):
     x = time.localtime()
     current_time = time.strftime("%H:%M:%S", x)
     print('Price sent at ', current_time)
-    try:
-        print('alert accepted')
-        driver.switch_to.alert.accept()
-    except:
-        pass
+    # try:
+    #     print('alert accepted')
+    #     driver.switch_to.alert.accept()
+    # except:
+    #     pass
     driver.get('https://www.google.com/')
     try:
-        print('alert accepted')
+        # print('alert accepted')
         driver.switch_to.alert.accept()
     except:
         pass
