@@ -88,7 +88,7 @@ while 1:
         prices = fetch_price(coins)
         access_wtsp()
         send_price(recipients, prices)
-        print(prices)
+        # print(prices)
         cooldown_period(t)
     except:
         print('Error occurred... Handling the error')
