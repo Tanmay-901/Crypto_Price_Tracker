@@ -16,7 +16,6 @@ driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selen
 # driver.maximize_window()
 wait = WebDriverWait(driver, 600)
 i = 0
-t = time.localtime()
 name = "Crypto Price tracker"
 while 1:
     try:
@@ -51,11 +50,12 @@ while 1:
         msg_box.clear()
         msg_box.send_keys(price)
         msg_box.send_keys(Keys.ENTER)
-        time.sleep(2)
+        time.sleep(5)
+        t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
         print('Price sent at ', current_time)
         driver.get('https://www.google.com/')
-        time.sleep(60)
+        time.sleep(120)
     except:
         print("Going into error handling mode")
         continue
