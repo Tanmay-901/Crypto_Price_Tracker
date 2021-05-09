@@ -11,7 +11,7 @@ driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
 options = webdriver.ChromeOptions()
 # options.add_argument('headless')
 options.add_argument("--window-size=1440, 900")
-# options.add_argument("disable-gpu")
+options.add_argument("disable-gpu")
 options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\dataset")
 driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
 wait = WebDriverWait(driver, 600)
@@ -66,34 +66,44 @@ def send_price(names, prices):
         pyperclip.copy(prices)
         msg_box.send_keys(Keys.CONTROL + "v")
         msg_box.send_keys(Keys.ENTER)
+        # time.sleep(5)
         try:
             print('alert accepted')
             driver.switch_to.alert.accept()
         except:
             pass
-        time.sleep(5)
 
 
 def cooldown_period(timer):
     x = time.localtime()
     current_time = time.strftime("%H:%M:%S", x)
     print('Price sent at ', current_time)
+    try:
+        print('alert accepted')
+        driver.switch_to.alert.accept()
+    except:
+        pass
     driver.get('https://www.google.com/')
+    try:
+        print('alert accepted')
+        driver.switch_to.alert.accept()
+    except:
+        pass
     time.sleep(timer)
 
 
 i = 0
 t = 120
+coins = list(input('Enter coins to be tracked: ').split())
 while 1:
     try:
         recipients = ['Crypto Price tracker']
         url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
         access_website(url, i)
-        coins = ['Dogecoin', 'IOST', 'Zilliqa', 'Nano', 'NEM', 'VeChain']
+        # coins = ['Dogecoin', 'IOST', 'Zilliqa', 'Nano', 'NEM', 'VeChain']
         prices = fetch_price(coins)
         access_wtsp()
         send_price(recipients, prices)
-
         # print(prices)
         cooldown_period(t)
     except:
