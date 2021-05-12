@@ -27,7 +27,7 @@ def access_website(url, counter):
             break
         except:
             pass
-    print('{}: '.format(counter), end=" -> ")
+    print('{}:'.format(counter), end=" -> ")
 
 
 def fetch_price(coins):
@@ -81,7 +81,7 @@ def cooldown_period(timer):
         driver.switch_to.alert.accept()
     except:
         pass
-    usertext, timer = timedKey("press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=280)
+    usertext, timer = timedKey(" || press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=280)
     if timer:
         pass
     elif usertext == 'q' or usertext == 'Q':
