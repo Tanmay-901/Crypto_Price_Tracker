@@ -7,17 +7,35 @@ from selenium.webdriver.support import expected_conditions as EC
 from pytimedinput import timedKey
 import pyperclip
 import time
+import socket
 
 
-# coins = list(input('Enter coins to be tracked: ').strip().split())
-driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
-options = webdriver.ChromeOptions()
-# options.add_argument('headless')
-# options.add_argument("--window-size=1080, 720")
-options.add_argument("disable-gpu")
-options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
-driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
-wait = WebDriverWait(driver, 600)
+def is_connected(hostname, j=0):
+    print('1')
+    print('.', end=" ")
+    pass
+    try:
+        # see if we can resolve the host name -- tells us if there is
+        # a DNS listening
+        host = socket.gethostbyname(hostname)
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        s = socket.create_connection((host, 80), 2)
+        s.close()
+        j = 0
+        print("\n")
+        return True
+    except:
+        pass
+    if not j:
+        j += 1
+        print("No Internet, trying", end=" ")
+        is_connected(REMOTE_SERVER, j)
+    else:
+        print(".", end=" ")
+        time.sleep(1)
+        is_connected(REMOTE_SERVER, j)
+
 
 
 def access_website(url, counter):
@@ -81,17 +99,33 @@ def cooldown_period(timer):
         driver.switch_to.alert.accept()
     except:
         pass
-    usertext, timer = timedKey(" || press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=280)
-    if timer:
-        pass
-    elif usertext == 'q' or usertext == 'Q':
-        driver.close()
-        quit()
+    try:
+        usertext, timer = timedKey(" || press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=280)
+        if timer:
+            pass
+        elif usertext == 'q' or usertext == 'Q':
+            driver.close()
+            quit()
+    except RuntimeError:
+        time.sleep(280)
 
 
 if __name__ == "__main__":
     i = 0
+    j = 0
     t = 280
+    REMOTE_SERVER = "one.one.one.one"
+    print('checking connectivity')
+    is_connected(REMOTE_SERVER, j)
+    print('internet connected')
+    driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
+    options = webdriver.ChromeOptions()
+    # options.add_argument('headless')
+    # options.add_argument("--window-size=1080, 720")
+    # options.add_argument("disable-gpu")
+    options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
+    driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
+    wait = WebDriverWait(driver, 600)
     while 1:
         try:
             i += 1
