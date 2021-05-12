@@ -1,3 +1,4 @@
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +14,7 @@ driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
 options = webdriver.ChromeOptions()
 # options.add_argument('headless')
 # options.add_argument("--window-size=1080, 720")
-# options.add_argument("disable-gpu")
+options.add_argument("disable-gpu")
 options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
 driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
 wait = WebDriverWait(driver, 600)
@@ -26,7 +27,7 @@ def access_website(url, counter):
             break
         except:
             pass
-    print('{}: coinswitch website accessed'.format(counter))
+    print('{}: '.format(counter), end=" -> ")
 
 
 def fetch_price(coins):
@@ -74,18 +75,18 @@ def send_price(names, prices):
 def cooldown_period(timer):
     x = time.localtime()
     current_time = time.strftime("%H:%M:%S", x)
-    print('Price sent at ', current_time)
+    print('Price sent at ', current_time, end=": ")
     driver.get('https://www.google.com/')
-    try:
+    try:                                   # Catching "leave site?" alert
         driver.switch_to.alert.accept()
     except:
         pass
-    usertext, timer = timedKey("Please, press 'q' to quit: ",
-                                  allowCharacters=['q', 'Q'], timeOut=280)
+    usertext, timer = timedKey("press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=20)
     if timer:
         pass
     elif usertext == 'q' or usertext == 'Q':
         driver.close()
+        quit()
 
 
 if __name__ == "__main__":
@@ -106,5 +107,5 @@ if __name__ == "__main__":
             cooldown_period(t)
             # break
         except:
-            print('Error occurred... Handling the error')
+            print('\nError occurred... Handling the error...')
             pass
