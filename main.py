@@ -2,19 +2,22 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.webdriver import FirefoxProfile
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 import pyperclip
 import time
 
 
 # coins = list(input('Enter coins to be tracked: ').strip().split())
-driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
-options = webdriver.ChromeOptions()
+driver_path = r'C:\\Users\\tanma\\PycharmProjects\\crypto_price_extracter\\geckodriver.exe'
+profile = FirefoxProfile("C:\\Users\\tanma\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles")
+options = webdriver.FirefoxOptions()
 # options.add_argument('headless')
 # options.add_argument("--window-size=1440, 900")
 # options.add_argument("disable-gpu")
-options.add_argument("uaser-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
-driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
+options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\")
+driver = webdriver.Firefox(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
 wait = WebDriverWait(driver, 600)
 
 
@@ -47,14 +50,13 @@ def access_wtsp():
         except:
             pass
     print("Whatsapp accessed")
-    time.sleep(5)
 
 
 def send_price(names, prices):
     for name in names:
-        # search_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
-        #         (By.XPATH, '//div[@class="_2_1wd copyable-text selectable-text"]')))
-        search_box = driver.find_element_by_xpath('//div[@class="_2_1wd.copyable-text.selectable-text"]')
+        search_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
+                (By.XPATH, '//div[@class="_2_1wd copyable-text selectable-text"]')))
+        # search_box = driver.find_element_by_xpath('//div[@class="_2_1wd.copyable-text.selectable-text"]')
         time.sleep(5)
         pyperclip.copy(name)
         search_box.send_keys(Keys.CONTROL + "v")
@@ -68,8 +70,8 @@ def send_price(names, prices):
         msg_box.clear()
         pyperclip.copy(prices)
         msg_box.send_keys(Keys.CONTROL + "v")
-        time.sleep(10)
         msg_box.send_keys(Keys.ENTER)
+        time.sleep(5)
 
 
 def cooldown_period(timer):

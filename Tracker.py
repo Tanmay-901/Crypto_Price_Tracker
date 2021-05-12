@@ -10,8 +10,8 @@ import time
 # coins = list(input('Enter coins to be tracked: ').strip().split())
 driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
 options = webdriver.ChromeOptions()
-options.add_argument('headless')
-# options.add_argument("--window-size=1440, 900")
+# options.add_argument('headless')
+# options.add_argument("--window-size=1080, 720")
 # options.add_argument("disable-gpu")
 options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
 driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
@@ -34,7 +34,7 @@ def fetch_price(coins):
     for coin in coins:
         g = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
                 (By.XPATH, '//*[@data-asset="{}"]'.format(coin)))).text
-        print((coin + ': ' + g[g.index('₹'):]))
+        # print((coin + ': ' + g[g.index('₹'):]))
         prices += (coin + ': ' + g[g.index('₹'):] + '\n')
     return prices
 
@@ -46,25 +46,23 @@ def access_wtsp():
             break
         except:
             pass
-    # try:
-    #     print(driver.find_element_by_xpath('//div[@class="landing-title._24CXv"]'))
-    # except:
-    #     pass
-    # time.sleep(10)
-    print("Whatsapp accessed")
+    # print("Whatsapp accessed")
 
 
 def send_price(names, prices):
     for name in names:
+        # search_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
+        #         (By.XPATH, '//div[@contenteditable="true"][@data-set="3"]')))
         search_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
-                (By.XPATH, '//div[@class="_2_1wd.copyable-text.selectable-text"]')))
+                (By.XPATH, '//div[@class="_2_1wd copyable-text selectable-text"]')))
+        # search_box = driver.find_element_by_xpath('//div[@contenteditable="true"][@data-set="3"]')
         # search_box = driver.find_element_by_xpath('//div[@class="_2_1wd.copyable-text.selectable-text"]')
         pyperclip.copy(name)
         search_box.send_keys(Keys.CONTROL + "v")
         group = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
             (By.XPATH, '//span[@title = "{}"]'.format(name))))
         group.click()
-        print('Whatsapp group found')
+        # print('Whatsapp group found')
         msg_box = WebDriverWait(driver, 100).until(EC.presence_of_element_located(
             (By.XPATH, '//div[@contenteditable="true"][@data-tab="6"]')))
         msg_box.clear()
@@ -85,23 +83,23 @@ def cooldown_period(timer):
     time.sleep(timer)
 
 
-# if __name__ == "__main__":
-i = 0
-t = 280
-while 1:
-    # try:
-        recipients = ['Crypto Price tracker']
-        url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
-        access_website(url, i)
-        coins = ['Dogecoin', 'Nano', 'DigiByte', 'NEM', 'VeChain']  # fixed tracking
-        prices = fetch_price(coins)
-        access_wtsp()
-        driver.save_screenshot("screenshot.png")
-        send_price(recipients, prices)
-        # print(prices)
-        cooldown_period(t)
-        # break
-    # except:
-    #     print('Error occurred... Handling the error')
-    #     pass
-driver.close()
+if __name__ == "__main__":
+    i = 0
+    t = 280
+    while 1:
+        try:
+            recipients = ['Crypto Price tracker']
+            url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
+            access_website(url, i)
+            coins = ['Dogecoin', 'Nano', 'DigiByte', 'NEM', 'VeChain']  # fixed tracking
+            prices = fetch_price(coins)
+            access_wtsp()
+            driver.save_screenshot("screenshot.png")
+            send_price(recipients, prices)
+            # print(prices)
+            cooldown_period(t)
+            # break
+        except:
+            print('Error occurred... Handling the error')
+            pass
+    driver.close()
