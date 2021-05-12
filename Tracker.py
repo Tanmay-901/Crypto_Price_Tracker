@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from pytimedinput import timedKey
 import pyperclip
 import time
 
@@ -20,7 +21,6 @@ wait = WebDriverWait(driver, 600)
 
 def access_website(url, counter):
     while 1:
-        counter += 1
         try:
             driver.get(url)
             break
@@ -80,7 +80,12 @@ def cooldown_period(timer):
         driver.switch_to.alert.accept()
     except:
         pass
-    time.sleep(timer)
+    usertext, timer = timedKey("Please, press 'q' to quit: ",
+                                  allowCharacters=['q', 'Q'], timeOut=280)
+    if timer:
+        pass
+    elif usertext == 'q' or usertext == 'Q':
+        driver.close()
 
 
 if __name__ == "__main__":
@@ -88,6 +93,7 @@ if __name__ == "__main__":
     t = 280
     while 1:
         try:
+            i += 1
             recipients = ['Crypto Price tracker']
             url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
             access_website(url, i)
@@ -102,4 +108,3 @@ if __name__ == "__main__":
         except:
             print('Error occurred... Handling the error')
             pass
-    driver.close()
