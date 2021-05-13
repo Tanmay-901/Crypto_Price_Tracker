@@ -132,7 +132,7 @@ if __name__ == "__main__":
             recipients = ['Crypto Price tracker']
             url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
             access_website(url, i)
-            coins = ['Dogecoin', 'Nano', 'DigiByte', 'NEM', 'VeChain']  # fixed tracking
+            coins = list(input("Enter coins to be tracked: ").strip().split())
             prices = fetch_price(coins)
             access_wtsp()
             driver.save_screenshot("screenshot.png")
