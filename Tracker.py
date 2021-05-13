@@ -1,4 +1,3 @@
-import sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -37,6 +36,37 @@ def is_connected(hostname, j=0):
         is_connected(REMOTE_SERVER, j)
 
 
+def editlist(edit):
+    main_list = ['Zilliqa', 'Band Protocol', 'Algorand', 'Theta Network', 'iExec RLC', 'Cosmos',
+            'DigiByte', 'Chiliz', 'Terra', 'Theta Fuel', 'Waves', 'Nano', 'IOST', 'Tezos',
+            'VeChain', 'DOT', 'Elrond', 'NEM', 'Filecoin', 'Bitcoin', 'Ethereum', 'Dogecoin',
+            'Ripple', 'Tron', 'Binance Coin', 'Cardano', 'Bitcoin Cash', 'EOS', 'GAS', 'NEO',
+            'Litecoin', 'Chainlink', 'Tether', 'Dash', 'Aave', 'Uniswap', 'True USD', 'USD Coin',
+            'Compound', '0x', 'AdEx', 'Augur', 'Bancor', 'Basic Attention Token', 'Civic', 'Enjin Coin',
+            'Fetch.ai', 'Golem', 'Kyber Network', 'Metal', 'OmiseGO', 'Paxos Standard Token', 'Power Ledger',
+            'DIA', 'Sushi', 'Quantstamp', 'Numeraire', 'yearn.finance', 'Dai', 'Loopring', 'AirSwap',
+            'Republic Protocol', 'Maker', 'QuarkChain', 'Swipe', 'Synthetix Network Token', 'Stellar',
+            'DFI.money', 'Ripio Credit Network', 'Status', 'Storj', 'aelf', 'district0x']
+    c = ""
+    coinlist = []
+    if edit == 0:
+        while 1:
+            check = ""
+            c = input("Enter One coin at a time: ")
+            if c in main_list:
+                coinlist.append(c)
+                c = ""
+            else:
+                print("Invalid Input!!!   Please check the spelling and enter Case sensitive input :)")
+                continue
+            check = input("Enter 'y' to add new coin or any other to proceed: ")
+            if check == "y":
+                continue
+            else:
+                print(*coinlist)
+                edit = 1
+                return coinlist, edit
+
 
 def access_website(url, counter):
     while 1:
@@ -45,7 +75,9 @@ def access_website(url, counter):
             break
         except:
             pass
+    counter += 1
     print('{}:'.format(counter), end=" -> ")
+    return counter
 
 
 def fetch_price(coins):
@@ -90,7 +122,7 @@ def send_price(names, prices):
         msg_box.send_keys(Keys.ENTER)
 
 
-def cooldown_period(timer):
+def cooldown_period(timer, edit_list):
     x = time.localtime()
     current_time = time.strftime("%H:%M:%S", x)
     print('Price sent at ', current_time, end=": ")
@@ -100,24 +132,37 @@ def cooldown_period(timer):
     except:
         pass
     try:
-        usertext, timer = timedKey(" || press 'q' to quit: ", allowCharacters=['q', 'Q'], timeOut=280)
+        usertext, timer = timedKey(" || press 'q' to quit OR 'e' to edit coin list7: ", allowCharacters=['q', 'Q','e','E'], timeOut=280)
         if timer:
+            edit_list = 1
             pass
+        elif usertext == 'e' or usertext == 'E':
+            print("Enter New List")
+            edit_list = 0
         elif usertext == 'q' or usertext == 'Q':
             driver.close()
             quit()
     except RuntimeError:
         time.sleep(280)
+    finally:
+        return edit_list
 
 
 if __name__ == "__main__":
     i = 0
     j = 0
     t = 280
+    coins = []
+    coin = ""
+    edit_list = 0
     REMOTE_SERVER = "one.one.one.one"
-    print('checking connectivity')
+    print('checking connectivity', end="..")
     is_connected(REMOTE_SERVER, j)
     print('internet connected')
+    while edit_list == 0:
+        coins, edit_list = editlist(edit_list)
+    else:
+        pass
     driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
@@ -128,17 +173,19 @@ if __name__ == "__main__":
     wait = WebDriverWait(driver, 600)
     while 1:
         try:
-            i += 1
+            if edit_list == 0:
+                coins, edit_list = editlist(edit_list)
+            else:
+                pass
             recipients = ['Crypto Price tracker']
             url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
-            access_website(url, i)
-            coins = list(input("Enter coins to be tracked: ").strip().split())
+            i = access_website(url, i)
             prices = fetch_price(coins)
             access_wtsp()
             driver.save_screenshot("screenshot.png")
             send_price(recipients, prices)
             # print(prices)
-            cooldown_period(t)
+            edit_list = cooldown_period(t, edit_list)
             # break
         except:
             print('\nError occurred... Handling the error...')

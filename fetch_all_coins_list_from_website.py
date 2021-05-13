@@ -11,15 +11,17 @@ import time
 driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
 options = webdriver.ChromeOptions()
 # options.add_argument('headless')
-# options.add_argument("--window-size=1440, 900")
+options.add_argument("window-size=1080*720")
 # options.add_argument("disable-gpu")
 options.add_argument("uaser-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
 driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
 wait = WebDriverWait(driver, 600)
-driver.maximize_window()
 
-driver.get('https://web.whatsapp.com/')
-driver.save_screenshot("screenshot1.png")
-search_box = driver.find_element_by_xpath('//div[@class="_2_1wd.copyable-text.selectable-text"]')
-driver.save_screenshot("screenshot2.png")
+driver.get("https://coinswitch.co/coins/dogecoin/dogecoin-to-inr")
+e = driver.find_elements_by_class_name("assets__card")
+time.sleep(5)
+ls = []
+for i in e:
+    ls.append(i.get_attribute("data-asset"))
 driver.close()
+print(ls)
