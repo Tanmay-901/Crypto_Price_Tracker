@@ -63,7 +63,7 @@ def editlist(edit):
             if check == "y":
                 continue
             else:
-                print(*coinlist)
+                print('Tracking => \n', *coinlist)
                 edit = 1
                 return coinlist, edit
 
@@ -132,7 +132,7 @@ def cooldown_period(timer, edit_list):
     except:
         pass
     try:
-        usertext, timer = timedKey(" || press 'q' to quit OR 'e' to edit coin list7: ", allowCharacters=['q', 'Q','e','E'], timeOut=280)
+        usertext, timer = timedKey(" || press 'q' to quit OR 'e' to edit coin list: ", allowCharacters=['q', 'Q','e','E'], timeOut=280)
         if timer:
             edit_list = 1
             pass
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
-    # options.add_argument("--window-size=1080, 720")
+    options.add_argument("window-size=300*170")
     # options.add_argument("disable-gpu")
     options.add_argument("user-data-dir=C:\\Users\\tanma\\AppData\\Local\\Google\\Chrome\\User Data - Copy")
     driver = webdriver.Chrome(executable_path=driver_path, options=options)  # selenium 4 prefers "options"
