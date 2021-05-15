@@ -34,4 +34,10 @@ you may report in the Issues section.
 ## Working Status(can be modified as per convinience):
 ![Working status](https://github.com/Tanmay-901/Important-details/blob/master/Images/Screenshot%20(313).png)  
   
-1. 
+1. Here you'll the the number of times and the time at which the prices were sent.  
+2. After each iteration (each value sent) you'll have following options(case insensitive):- 
+   * Press 'Q' to exit the program.  
+   * Press 'E' to edit the coin list.  
+   * Press 'F' to force run the program to send the value immediately again.
+   * Wait for the timer to end and Re-run the program automatically with the same coin list approximately at 5 minutes interval.  
+     (can vary because of different reasons such as processor speed, network speed etc.)
