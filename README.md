@@ -32,7 +32,7 @@ you may report in the Issues section.
 ----------------------------------
   
 ## Working Status(can be modified as per convinience):
-![Working status](https://github.com/Tanmay-901/Important-details/blob/master/Images/Screenshot%20(313).png)  
+![Working status](https://github.com/Tanmay-901/Important-details/blob/master/Images/Crypto_price_tracker_working_status.png)  
   
 1. Here you'll the the number of times and the time at which the prices were sent.  
 2. After each iteration (each value sent) you'll have following options(case insensitive):- 
