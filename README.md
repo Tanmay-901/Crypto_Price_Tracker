@@ -1,7 +1,8 @@
 # Crypto_Price_Tracker
 ----------------------
 ## Tracks crypto price on a platform and sends them to your whatsapp
-For this project, the prices are tracked on [Coinswitch website](https://coinswitch.co/coins/dogecoin/dogecoin-to-inr)(because that's what we were using for crypto transactions).  
+- For this project, the prices are tracked on [Coinswitch website](https://coinswitch.co/coins/dogecoin/dogecoin-to-inr)(because that's what we were using for crypto transactions).  
+- Use [Tracker.py](https://github.com/Tanmay-901/Crypto_Price_Tracker/blob/master/Tracker.py) file from the repo to get started with crypto tracking.
 -----------------------
 ## Pre-requisites:  
 * Selenium must be installed in python `pip install selenium`.  
