@@ -17,3 +17,21 @@ For this project, the prices are tracked on [Coinswitch website](https://coinswi
 you may report in the Issues section.  
 -----------------------
 ## CMD Interface:  
+![CMD Interface](https://github.com/Tanmay-901/Important-details/blob/master/Images/Screenshot%20(312).png)
+(ignore the devtools listening processing, it is return from selenium starting to scrap data)  
+
+## Steps to use:
+1. First the script will check for internet connectivity.  
+2. Then it'll check for any pre-saved list of coins and if you're running for the first time you need to add coins first. 
+3. Press "1" to proceed with the pre-saved Coin List (if there's any) or "2" to change the list.  
+4. If you're runnning the script for the first time or want to change the list of coins follow the below steps:-  
+    * If editing the list, select if you want to add or remove coins. If running for the first time directly start adding coin names.  
+    * Once you're done adding the coins, enter 'n' to proceed further.  
+    * It'll again ask if you want to do any further changes about adding or removing coins, press "3" if you're done.  
+    * After that the program will begin to scrap data of the website and send them to your whatsapp through whatsapp web.  
+----------------------------------
+  
+## Working Status(can be modified as per convinience):
+![Working status](https://github.com/Tanmay-901/Important-details/blob/master/Images/Screenshot%20(313).png)  
+  
+1. 
