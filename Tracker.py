@@ -56,19 +56,19 @@ class Editlist:
 
     def take_input(self):
         while 1:
-            check = ""
-            c = input("\nEnter One coin at a time: ")
-            if c in self.main_list and c not in self.coinlist:
-                self.coinlist.append(c)
-                c = ""
-            else:
-                print("\nInvalid Input!!!   Please check the spelling and enter Case sensitive input :)")
-                continue
-            check = input("\nEnter 'y' to add new coin or any other to proceed: ")
-            if check == "y":
-                continue
-            else:
+            c = input("\nEnter New Coin or 'N' to Proceed: ")
+            if c == "n":
                 break
+            else:
+                if c in self.main_list and c not in self.coinlist:
+                    self.coinlist.append(c)
+                    c = ""
+                elif c not in self.main_list:
+                    print("\nInvalid Input!!!   Please check the spelling and enter Case sensitive input :)")
+                    continue
+                elif c in self.coinlist:
+                    print("\nCoin Already Present")
+                    continue
         self.send_price_to_file()
 
     def new_list(self):
@@ -194,7 +194,7 @@ def cooldown_period(timer, edit_list):
             quit()
         if usertext == 'f' or usertext == 'F':
             edit_list = 1
-            pass
+            return edit_list
         elif timer:
             edit_list = 1
             pass
@@ -212,14 +212,22 @@ if __name__ == "__main__":
     REMOTE_SERVER = "one.one.one.one"
     print('checking connectivity', end="..")
     is_connected(REMOTE_SERVER, j)
-    print('internet connected')
+    print('internet connected\n')
     a = Editlist()
-    coins = a.get_price_from_file()
-    coinlist_action = int(input("\nEnter 1 to proceed with  previous coins or 2 to Change: "))
-    if coinlist_action == 1:
+    try:
+        coins = a.get_price_from_file()
+        coinlist_action = int(input("\nEnter 1 to proceed with  previous coins or 2 to Change: "))
+        if coinlist_action == 1:
+            pass
+        elif coinlist_action == 2:
+            coins = a.edit_list()
+    except FileNotFoundError:
+        coins = []
+        print("Running script 1st time, Need to add coins")
+        a.add_coin()
+        coinlist_action = 1
+        a.send_price_to_file()
         pass
-    elif coinlist_action == 2:
-        coins = a.edit_list()
     driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
@@ -247,3 +255,4 @@ if __name__ == "__main__":
         except:
             print('\nError occurred... Handling the error...\n')
             pass
+    driver.close()
