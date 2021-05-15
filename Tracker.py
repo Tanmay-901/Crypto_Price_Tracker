@@ -36,36 +36,88 @@ def is_connected(hostname, j=0):
         is_connected(REMOTE_SERVER, j)
 
 
-def editlist(edit):
-    main_list = ['Zilliqa', 'Band Protocol', 'Algorand', 'Theta Network', 'iExec RLC', 'Cosmos',
-            'DigiByte', 'Chiliz', 'Terra', 'Theta Fuel', 'Waves', 'Nano', 'IOST', 'Tezos',
-            'VeChain', 'DOT', 'Elrond', 'NEM', 'Filecoin', 'Bitcoin', 'Ethereum', 'Dogecoin',
-            'Ripple', 'Tron', 'Binance Coin', 'Cardano', 'Bitcoin Cash', 'EOS', 'GAS', 'NEO',
-            'Litecoin', 'Chainlink', 'Tether', 'Dash', 'Aave', 'Uniswap', 'True USD', 'USD Coin',
-            'Compound', '0x', 'AdEx', 'Augur', 'Bancor', 'Basic Attention Token', 'Civic', 'Enjin Coin',
-            'Fetch.ai', 'Golem', 'Kyber Network', 'Metal', 'OmiseGO', 'Paxos Standard Token', 'Power Ledger',
-            'DIA', 'Sushi', 'Quantstamp', 'Numeraire', 'yearn.finance', 'Dai', 'Loopring', 'AirSwap',
-            'Republic Protocol', 'Maker', 'QuarkChain', 'Swipe', 'Synthetix Network Token', 'Stellar',
-            'DFI.money', 'Ripio Credit Network', 'Status', 'Storj', 'aelf', 'district0x']
-    c = ""
-    coinlist = []
-    if edit == 0:
+class Editlist:
+
+    def __init__(self):
+        self.coinlist_action = ""
+        self.coinlist = []
+        self.edit = 0
+        self.removable = ""
+        self.main_list = ['Zilliqa', 'Band Protocol', 'Algorand', 'Theta Network', 'iExec RLC', 'Cosmos',
+                          'DigiByte', 'Chiliz', 'Terra', 'Theta Fuel', 'Waves', 'Nano', 'IOST', 'Tezos',
+                          'VeChain', 'DOT', 'Elrond', 'NEM', 'Filecoin', 'Bitcoin', 'Ethereum', 'Dogecoin',
+                          'Ripple', 'Tron', 'Binance Coin', 'Cardano', 'Bitcoin Cash', 'EOS', 'GAS', 'NEO',
+                          'Litecoin', 'Chainlink', 'Tether', 'Dash', 'Aave', 'Uniswap', 'True USD', 'USD Coin',
+                          'Compound', '0x', 'AdEx', 'Augur', 'Bancor', 'Basic Attention Token', 'Civic', 'Enjin Coin',
+                          'Fetch.ai', 'Golem', 'Kyber Network', 'Metal', 'OmiseGO', 'Paxos Standard Token', 'Power Ledger',
+                          'DIA', 'Sushi', 'Quantstamp', 'Numeraire', 'yearn.finance', 'Dai', 'Loopring', 'AirSwap',
+                          'Republic Protocol', 'Maker', 'QuarkChain', 'Swipe', 'Synthetix Network Token', 'Stellar',
+                          'DFI.money', 'Ripio Credit Network', 'Status', 'Storj', 'aelf', 'district0x']
+
+    def take_input(self):
         while 1:
             check = ""
-            c = input("Enter One coin at a time: ")
-            if c in main_list:
-                coinlist.append(c)
+            c = input("\nEnter One coin at a time: ")
+            if c in self.main_list and c not in self.coinlist:
+                self.coinlist.append(c)
                 c = ""
             else:
-                print("Invalid Input!!!   Please check the spelling and enter Case sensitive input :)")
+                print("\nInvalid Input!!!   Please check the spelling and enter Case sensitive input :)")
                 continue
-            check = input("Enter 'y' to add new coin or any other to proceed: ")
+            check = input("\nEnter 'y' to add new coin or any other to proceed: ")
             if check == "y":
                 continue
             else:
-                print('Tracking => \n', *coinlist)
-                edit = 1
-                return coinlist, edit
+                break
+        self.send_price_to_file()
+
+    def new_list(self):
+        self.coinlist = []
+        self.take_input()
+
+    def add_coin(self):
+        self.take_input()
+
+    def remove_coin(self):
+        print("\nCOIN LIST =>", *self.coinlist)
+        while 1:
+            self.removable = input("\nEnter coin name from the list to be removed or enter 'n' if done: ")
+            if self.removable == 'n':
+                break
+            elif self.removable in self.coinlist:
+                self.coinlist.remove(self.removable)
+                print("\nCOIN LIST =>", *self.coinlist)
+            else:
+                continue
+        self.send_price_to_file()
+
+    def edit_list(self):
+        print("\nCOIN LIST =>", *self.coinlist)
+        while 1:
+            self.coinlist_action = input("\nEnter 1 to add coin || 2 to remove coin || 3 to proceed: ")
+            if self.coinlist_action == "1":
+                self.add_coin()
+            elif self.coinlist_action == "2":
+                self.remove_coin()
+            elif self.coinlist_action == "3":
+                self.coinlist_action = ""
+                break
+        return self.coinlist
+
+    def get_price_from_file(self):
+        self.coin_record = open("coins.txt", "r")
+        ls = self.coin_record.readlines()
+        for item in ls:
+            self.coinlist.append(item.strip())
+        self.coin_record.close()
+        print("\nCOIN LIST =>", *self.coinlist)
+        return self.coinlist
+
+    def send_price_to_file(self):
+        self.coin_record = open("coins.txt", "w+")
+        for item in self.coinlist:
+            self.coin_record.write(item + '\n')
+        self.coin_record.close()
 
 
 def access_website(url, counter):
@@ -76,7 +128,7 @@ def access_website(url, counter):
         except:
             pass
     counter += 1
-    print('{}:'.format(counter), end=" -> ")
+    print('\n{}:'.format(counter), end=" -> ")
     return counter
 
 
@@ -124,7 +176,7 @@ def send_price(names, prices):
 
 def cooldown_period(timer, edit_list):
     x = time.localtime()
-    current_time = time.strftime("%H:%M:%S", x)
+    current_time = time.strftime("%H:%M", x)
     print('Price sent at ', current_time, end=": ")
     driver.get('https://www.google.com/')
     try:                                   # Catching "leave site?" alert
@@ -132,16 +184,20 @@ def cooldown_period(timer, edit_list):
     except:
         pass
     try:
-        usertext, timer = timedKey(" || press 'q' to quit OR 'e' to edit coin list: ", allowCharacters=['q', 'Q','e','E'], timeOut=280)
-        if timer:
-            edit_list = 1
-            pass
-        elif usertext == 'e' or usertext == 'E':
-            print("Enter New List")
-            edit_list = 0
+        usertext, timer = timedKey(" | press 'Q' to quit | 'E' to edit coin list | 'F' to force rerun | "
+                                   "or wait to auto-run: "
+                                   , allowCharacters=['q', 'Q', 'e', 'E', 'f', 'F'], timeOut=280)
+        if usertext == 'e' or usertext == 'E':
+            edit_list = 2
         elif usertext == 'q' or usertext == 'Q':
             driver.close()
             quit()
+        if usertext == 'f' or usertext == 'F':
+            edit_list = 1
+            pass
+        elif timer:
+            edit_list = 1
+            pass
     except RuntimeError:
         time.sleep(280)
     finally:
@@ -152,17 +208,18 @@ if __name__ == "__main__":
     i = 0
     j = 0
     t = 280
-    coins = []
     coin = ""
-    edit_list = 0
     REMOTE_SERVER = "one.one.one.one"
     print('checking connectivity', end="..")
     is_connected(REMOTE_SERVER, j)
     print('internet connected')
-    while edit_list == 0:
-        coins, edit_list = editlist(edit_list)
-    else:
+    a = Editlist()
+    coins = a.get_price_from_file()
+    coinlist_action = int(input("\nEnter 1 to proceed with  previous coins or 2 to Change: "))
+    if coinlist_action == 1:
         pass
+    elif coinlist_action == 2:
+        coins = a.edit_list()
     driver_path = r'C:\Users\tanma\PycharmProjects\chromedriver.exe'
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
@@ -173,20 +230,20 @@ if __name__ == "__main__":
     wait = WebDriverWait(driver, 600)
     while 1:
         try:
-            if edit_list == 0:
-                coins, edit_list = editlist(edit_list)
-            else:
-                pass
             recipients = ['Crypto Price tracker']
             url = "https://coinswitch.co/coins/dogecoin/dogecoin-to-inr"
             i = access_website(url, i)
             prices = fetch_price(coins)
             access_wtsp()
-            driver.save_screenshot("screenshot.png")
+            # driver.save_screenshot("screenshot.png")
             send_price(recipients, prices)
             # print(prices)
-            edit_list = cooldown_period(t, edit_list)
+            coinlist_action = cooldown_period(t, coinlist_action)
+            if coinlist_action == 1:
+                pass
+            elif coinlist_action == 2:
+                coins = a.edit_list()
             # break
         except:
-            print('\nError occurred... Handling the error...')
+            print('\nError occurred... Handling the error...\n')
             pass
